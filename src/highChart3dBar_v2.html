@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HighCharts 3D demo</title>
+	<style>
+	#container {
+		height: 100%;
+		min-width: 310px;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	</style>
+</head>
+<body>
+	<div id="container" style="height: 400px"></div>
+	<script src="js/highcharts.js"></script>
+	<script src="js/highcharts-3d.js"></script>
+	<script src="js/exporting.js"></script>
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script>
+	$(function() {
+		const chart = Highcharts.chart('container', {
+			chart: {
+				type: 'column',
+				options3d: {
+					enabled: true,
+					alpha: 20,
+					beta: 30,
+					depth: 200,
+					viewDistance: 5,
+					frame: {
+						bottom: {
+							size: 1,
+							color: 'rgba(0,0,0,0.05)'
+						}
+					}
+				}
+			},
+			title: {
+				text: 'SAP Provisioning Chart'
+			},
+			// subtitle: {
+			// 	text: ''
+			// },
+			yAxis: {
+				min: 0,
+				max: 5
+			},
+			xAxis: {
+				min:0,
+				categories: [ "DEV", "STAG", "PROD"],
+				labels: {
+            skew3d: true,
+            style: {
+                fontSize: '16px'
+            }
+        }
+			},
+			zAxis: {
+				min: 0,
+				max: 2,
+				categories: ["Gold", "Silver", "Bronze"],
+				labels: {
+					y: 5,
+					rotation: 20
+				}
+			},
+			plotOptions: {
+				series: {
+					groupZPadding: 10,
+					depth: 60,
+					groupPadding: 0,
+					grouping: false,
+				}
+			},
+			series: [{
+				name:"Gold",
+				stack: 1,
+				data: [{x: 0, y: 1},
+				//{x: 0, y: 2, "color":"green"},
+				{x: 2, y: 2}]
+			},
+			{
+				name:"Silver",
+				stack: 1,
+				data: [{x: 1, y: 1}]
+			},
+			{
+				name: "Bronze",
+				data: [{x: 1, y: 2}]
+			}]
+		});
+
+
+		// Add mouse events for rotation
+		$(chart.container).on('mousedown.hc touchstart.hc', function(eStart) {
+			eStart = chart.pointer.normalize(eStart);
+
+			var posX = eStart.pageX,
+				posY = eStart.pageY,
+				alpha = chart.options.chart.options3d.alpha,
+				beta = chart.options.chart.options3d.beta,
+				newAlpha,
+				newBeta,
+				sensitivity = 5; // lower is more sensitive
+
+			$(document).on({
+				'mousemove.hc touchdrag.hc': function(e) {
+					// Run beta
+					newBeta = beta + (posX - e.pageX) / sensitivity;
+					chart.options.chart.options3d.beta = newBeta;
+
+					// Run alpha
+					newAlpha = alpha + (e.pageY - posY) / sensitivity;
+					chart.options.chart.options3d.alpha = newAlpha;
+
+					chart.redraw(false);
+				},
+				'mouseup touchend': function() {
+					$(document).off('.hc');
+				}
+			});
+		});
+
+		});
+	</script>
+</body>
+</html>

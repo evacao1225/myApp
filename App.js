@@ -23,11 +23,13 @@ import {
 	createAppContainer
 } from 'react-navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { MenuProvider } from 'react-native-popup-menu';
 //import Ionicons from 'react-native-vector-icons/Ionicons';
 //import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Home from './src/home';
 import Reports from './src/reports';
+import MessageLoading from './src/messageLoading';
 import Messages from './src/messages';
 import MessageContent from './src/messageContent';
 import User from './src/user';
@@ -53,7 +55,7 @@ homeStackNavigator.navigationOptions = {
 
 const reportStackNavigator = createStackNavigator(
 	{ Reports },
-	{ defaultNavigationOptions }
+	{ defaultNavigationOptions },
 );
 reportStackNavigator.navigationOptions = {
 	tabBarLabel: 'Reports'
@@ -63,9 +65,20 @@ const messageStackNavigator = createStackNavigator(
 	{ Messages,
 		MessageContent,
 	},
-	{ defaultNavigationOptions }
+	{ defaultNavigationOptions },
+	{ initialRouteName: 'Messages' }
 );
-messageStackNavigator.navigationOptions = {
+
+const messageSwitchNavigator = createSwitchNavigator(
+	{
+		MessageLoading,
+		messageStackNavigator,
+	},
+	{ defaultNavigationOptions },
+	{ initialRouteName: 'MessageLoading' }
+);
+
+messageSwitchNavigator.navigationOptions = {
 	tabBarLabel: 'Messages'
 };
 
@@ -80,7 +93,7 @@ userStackNavigator.navigationOptions = {
 const TabNavigator = createBottomTabNavigator({
 	homeStackNavigator,
 	reportStackNavigator,
-	messageStackNavigator,
+	messageSwitchNavigator,
 	userStackNavigator,
 },
 {
@@ -93,7 +106,7 @@ const TabNavigator = createBottomTabNavigator({
 					iconName = `home`;
 				}else if(routeName === 'reportStackNavigator') {
 					iconName = `bar-chart${focused ? '' : '-o'}`;
-				}else if(routeName === 'messageStackNavigator') {
+				}else if(routeName === 'messageSwitchNavigator') {
 					iconName = `envelope${focused ? '' : '-o'}`;
 				}else if(routeName === 'userStackNavigator') {
 					iconName = `user-circle${focused ? '' : '-o'}`;
@@ -107,4 +120,12 @@ const TabNavigator = createBottomTabNavigator({
 	},
 });
 
-export default createAppContainer(TabNavigator);
+const AppContainer = createAppContainer(TabNavigator);
+
+export default function App(props){
+	return (
+		<MenuProvider>
+			<AppContainer />
+		</MenuProvider>
+	);
+}

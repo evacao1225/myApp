@@ -4697,6 +4697,11 @@ react-native-gesture-handler@^1.0.0, react-native-gesture-handler@^1.0.9:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
+react-native-popup-menu@^0.14.1:
+  version "0.14.1"
+  resolved "http://registry.npm.taobao.org/react-native-popup-menu/download/react-native-popup-menu-0.14.1.tgz#498c956eccf42f00a5890ccefa295e7b9510997b"
+  integrity sha1-SYyVbsz0LwCliQzO+ilee5UQmXs=
+
 react-native-safe-area-view@^0.11.0:
   version "0.11.0"
   resolved "http://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-0.11.0.tgz#4f3dda43c2bace37965e7c6aef5fc83d4f19d174"

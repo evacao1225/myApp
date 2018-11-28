@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Poincare Disk demo</title>
+	<style>
+	#container {
+		height: 100%;
+		min-width: 310px;
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	</style>
+</head>
+<body>
+	<div id="container" style="height: 400px"></div>
+	<script src="js/highcharts.js"></script>
+	<script src="js/highcharts-3d.js"></script>
+	<script src="js/exporting.js"></script>
+	<script src="js/export-data.js"></script>
+	<script>
+	Highcharts.chart('container', {
+		chart: {
+			type: 'column',
+			options3d: {
+				enabled: true,
+				alpha: 15,
+				beta: 15,
+				viewDistance: 25,
+				depth: 40
+			}
+		},
+
+		title: {
+			text: 'SAP Provisioning Report'
+		},
+
+		xAxis: {
+			categories: ['DEV', 'STAG', 'PROD'],
+			labels: {
+				skew3d: true,
+				style: {
+					fontSize: '16px'
+				}
+			}
+		},
+
+		yAxis: {
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: 'Number of Provisioning',
+				skew3d: true
+			}
+		},
+
+		tooltip: {
+			headerFormat: '<b>{point.key}</b><br>',
+			pointFormat: '<span style="color:{series.color}">●</span> {series.name}: {point.y}'
+		},
+
+		plotOptions: {
+			column: {
+				stacking: 'normal',
+				depth: 40
+			}
+		},
+
+		series: [{
+			name: 'Gold',
+			data: [0, 1, 2]
+		},{
+			name: 'Silver',
+			data: [0, 1, 0]
+		}, {
+			name: 'Bronze',
+			data: [1, 0, 0]
+		}]
+		});
+
+	</script>
+</body>
+</html>
