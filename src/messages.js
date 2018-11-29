@@ -23,17 +23,18 @@ export default class Messages extends Component {
 		this.messageList = [
 			{
 				subject: 'Congratulations!',
-				abstract: 'Congratulations! All VMs are ...',
-				content: 'Congratulations! All VMs are working well. Please refer to below charts for more information. ',
+				abstract: 'Your client XYZ just provisioned ...',
+				content: 'Your client XYZ just provisioned 4 SAP Landscapes successfully!!\n\n'+
+					'There are 12,539 SAP environments running on Managed Apps. You have 5 clients accessing their SAP environments from US/Euro.',
 				read: false,
-				timestamp: 1543131063544,
+				timestamp: new Date().getTime(),
 				starred: false,
 			},
 			{
 				subject: 'Message 2',
 				abstract: 'This is abstract of message 2...',
 				content: 'message2 content!',
-				read: false,
+				read: true,
 				timestamp: 1541101063544,
 				starred: false,
 			},
@@ -41,7 +42,7 @@ export default class Messages extends Component {
 				subject: 'Message 3',
 				abstract: 'This is abstract of message 3...',
 				content: 'message3 content!',
-				read: false,
+				read: true,
 				timestamp: 1540131063544,
 				starred: false,
 			},
@@ -49,16 +50,20 @@ export default class Messages extends Component {
 				subject: 'Message 4',
 				abstract: 'This is abstract of message 4...',
 				content: 'message4 content!',
-				read: false,
+				read: true,
 				timestamp: 1540050003544,
 				starred: false,
 			}
 		];
+		// TODO: changed to fetch message list from navigation
+		//this.messageList = this.props.navigation.getParam('messages', []);
 
 		this.handlePress = this.handlePress.bind(this);
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleStar = this.handleStar.bind(this);
 		this.handleUnread = this.handleUnread.bind(this);
+
+		console.log(`constructor messages: ${JSON.stringify(this.props.navigation.getParam('messages'))}`);
 	}
 
 	handlePress(index) {
@@ -111,6 +116,8 @@ export default class Messages extends Component {
 				let sameDay = Utility.isSameDay(date, now);
 				let month = `0${date.getMonth()+1}`.slice(-2);
 				let day = `0${date.getDate()}`.slice(-2);
+				let hour = `0${date.getHours()}`.slice(-2);
+				let minites = `0${date.getMinutes()}`.slice(-2);
 
 				messageItems.push(
 					<TouchableOpacity key={item.subject} style={styles.msgItem} onPress={() => {that.handlePress(index)}}>
@@ -124,7 +131,7 @@ export default class Messages extends Component {
 						<View style={styles.itemRight}>
 							<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 								<View style={{flexDirection: 'row', alignItems: 'baseline', paddingBottom: 5,}}>
-									{!item.read && <View style={{width: 8, height: 8, borderRadius: 4, backgroundColor: '#005AB5'}} />}
+									{!item.read && <View style={{width: 8, height: 8, borderRadius: 4, backgroundColor: '#3F9F00'}} />}
 									<Text style={styles.title}>{item.subject}</Text>
 								</View>
 								<View style={{flexDirection: 'row'}}>
@@ -132,7 +139,7 @@ export default class Messages extends Component {
 										<AntDesign name={'star'} color={'#FFD306'} size={16} />
 									}
 									<Text style={styles.time}>
-										{sameDay ? (`${date.getHours()}:${date.getMinutes()}`)
+										{sameDay ? (`${hour}:${minites}`)
 												 : (`${date.getFullYear()}/${month}/${day}`)}
 									</Text>
 								</View>
@@ -175,8 +182,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginLeft: 10,
 		marginRight: 10,
-		marginTop: 10,
-		height: 60,
+		marginTop: 15,
+		height: 66,
 	},
 	itemLeft: {
 		width: 25,
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
 	},
 	content: {
 		fontSize: 15,
-		paddingLeft: 10,
+		paddingLeft: 5,
 		fontWeight: 'normal',
 		color: '#6C6C6C',
 	},

@@ -22,7 +22,7 @@ export default class MessageContent extends Component {
 							<MaterialIcons key={'more-vert'} name={'more-vert'} color={'#FFF'} size={20} style={{marginRight: 5}}/>
 						</MenuTrigger>
 						<MenuOptions customStyles={optionsStyles}>
-							<MenuOption key={'share'} style={{flexDirection: 'row'}} onSelect={() => { alert('sharing...') }}>
+							<MenuOption key={'share'} style={{flexDirection: 'row'}} onSelect={() => { alert('sharing with team...') }}>
 								<MaterialIcons name={'share'} size={20} />
 								<Text style={{marginLeft: 10}}>Share</Text>
 							</MenuOption>
@@ -96,14 +96,16 @@ export default class MessageContent extends Component {
     };
 		const date = new Date(this.message.timestamp);
 		//let chartFile = this.charts[this.state.currentChart];
-		console.log(`currentChart: ${this.state.currentChart}`);
+		//console.log(`currentChart: ${this.state.currentChart}`);
+		let month = `0${date.getMonth()+1}`.slice(-2);
+		let day = `0${date.getDate()}`.slice(-2);
 		return (
 			<View style={styles.container}>
 				<View style={styles.msgHeader}>
 					<Text style={{fontSize: 20}}>{this.message.subject}</Text>
 					<View style={{flexDirection: 'row'}}>
 						{this.message.star && <AntDesign name={'star'} color={'#FFD306'} size={12} />}
-						<Text style={{fontSize: 10, color: '#6C6C6C', marginLeft: 5}}>{`${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`}</Text>
+						<Text style={{fontSize: 10, color: '#6C6C6C', marginLeft: 5}}>{`${date.getFullYear()}/${month}/${day}`}</Text>
 					</View>
 				</View>
 				<View style={styles.content}>
@@ -117,7 +119,7 @@ export default class MessageContent extends Component {
 					<View style={{flexGrow: 1}}>
 						{this.state.currentChart === 0 &&
 							<View style={{alignSelf: 'center'}}>
-							<WebView uri={require('./highChart3dBar_v0.html')} />
+								<WebView uri={require('./highChart3dBar_v0.html')} />
 							</View>
 						}
 						{this.state.currentChart === 1 &&
@@ -137,9 +139,6 @@ const optionsStyles = {
 		borderRadius: 5,
 		width: 150,
 		//marginRight: 10,
-  },
-  optionsWrapper: {
-
   },
   optionWrapper: {
     padding: 10,
@@ -177,6 +176,6 @@ const styles = StyleSheet.create({
 	content: {
 		//flexGrow: 1,
 		marginTop: 10,
-		marginBottom: 10,
+		//marginBottom: 10,
 	}
 })

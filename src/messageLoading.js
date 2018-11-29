@@ -11,7 +11,9 @@ export default class MessageLoading extends Component {
 		return fetch('https://jsonplaceholder.typicode.com/posts/1')
 			.then((response) => response.json())
 			.then((responseJson) => {
-				this.props.navigation.navigate('messageStackNavigator');
+				this.props.navigation.navigate('Messages', {
+					messages: responseJson
+				});
 			})
 			.catch((error) => {
 				console.error(error);

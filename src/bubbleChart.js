@@ -157,7 +157,7 @@ class BubbleChart extends React.Component {
 								style={{
 									alignItems: 'center',
 									justifyContent: 'center',
-									backgroundColor: 'green',
+									backgroundColor: '#5F9F00',
 									width: 200,
 									height: 200,
 									borderRadius: 100,
