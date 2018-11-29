@@ -13,7 +13,7 @@
 	</style>
 </head>
 <body>
-	<div id="container" style="height: 400px"></div>
+	<div id="container" style="height: 350px;"></div>
 	<script src="js/highcharts.js"></script>
 	<script src="js/highcharts-3d.js"></script>
 	<script src="js/exporting.js"></script>
@@ -38,11 +38,14 @@
 				}
 			},
 			title: {
-				text: 'SAP Provisioning Chart'
+				text: 'SAP Provisioning',
+				style: {
+					fontSize: "14px"
+				}
 			},
-			// subtitle: {
-			// 	text: ''
-			// },
+			legend: {
+				enabled: false
+			},
 			yAxis: {
 				min: 0,
 				max: 5
@@ -53,7 +56,8 @@
 				labels: {
             skew3d: true,
             style: {
-                fontSize: '16px'
+                fontSize: '16px',
+								color: 'black'
             }
         }
 			},
@@ -63,7 +67,10 @@
 				categories: ["Gold", "Silver", "Bronze"],
 				labels: {
 					y: 5,
-					rotation: 20
+					rotation: 20,
+					style: {
+						color: 'black'
+					}
 				}
 			},
 			plotOptions: {
@@ -74,21 +81,24 @@
 					grouping: false,
 				}
 			},
+			exporting: {
+				enabled: false
+			},
 			series: [{
 				name:"Gold",
 				stack: 1,
-				data: [{x: 0, y: 1},
+				data: [{x: 0, y: 1, color: '#A23400'},
 				//{x: 0, y: 2, "color":"green"},
-				{x: 2, y: 2}]
+				{x: 2, y: 2, color: '#FF5808'}]
 			},
 			{
 				name:"Silver",
 				stack: 1,
-				data: [{x: 1, y: 1}]
+				data: [{x: 1, y: 1, color: '#642100'}]
 			},
 			{
 				name: "Bronze",
-				data: [{x: 1, y: 2}]
+				data: [{x: 1, y: 2, color: '#FFCBB3'}]
 			}]
 		});
 
@@ -106,7 +116,7 @@
 				sensitivity = 5; // lower is more sensitive
 
 			$(document).on({
-				'mousemove.hc touchdrag.hc': function(e) {
+				'mousemove.hc touchmove.hc': function(e) {
 					// Run beta
 					newBeta = beta + (posX - e.pageX) / sensitivity;
 					chart.options.chart.options3d.beta = newBeta;

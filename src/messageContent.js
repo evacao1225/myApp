@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import WebView from './webview';
+import BubbleChart from './bubbleChart';
 
 export default class MessageContent extends Component {
 	static navigationOptions = ({ navigation }) => {
@@ -33,7 +35,7 @@ export default class MessageContent extends Component {
 								<Text style={{marginLeft: 10}}>Unread</Text>
 							</MenuOption>
 							<MenuOption key={'print'} style={{flexDirection: 'row'}} onSelect={() => {alert('printing...')}}>
-								<MaterialIcons name={'print'} size={20} />
+								<MaterialIcons name={'print'} size={20} color={'#DDD'}/>
 								<Text style={{marginLeft: 10}}>Print</Text>
 							</MenuOption>
 						</MenuOptions>
@@ -48,29 +50,81 @@ export default class MessageContent extends Component {
 		const { navigation } = this.props;
 		this.message = navigation.getParam('message', {});
 		this.handleDelete = navigation.getParam('delete');
+		this.state = {
+			currentChart: 0
+    };
+		this.chartCount = 2;
+		this.critical_value = 100;
 	}
+
+  onSwipe(gestureName, gestureState) {
+		const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+		console.log(`gestureState: ${JSON.stringify(gestureState)}`);
+		if(gestureState) {
+			let dx = Math.abs(gestureState.dx), dy = Math.abs(gestureState.dy);
+			if(dx > dy && dx >= this.critical_value) {
+				gestureName = gestureState.dx > 0 ? SWIPE_RIGHT : SWIPE_LEFT;
+			}else if(dy >= dx && dy >= this.critical_value) {
+				gestureName = gestureName.dy > 0 ? SWIPE_DOWN : SWIPE_UP;
+			}
+
+	    switch (gestureName) {
+	      case SWIPE_LEFT:
+	        this.setState({
+						currentChart: this.state.currentChart < this.chartCount-1 ? this.state.currentChart+1 : this.state.currentChart
+					});
+	        break;
+	      case SWIPE_RIGHT:
+	        this.setState({
+						currentChart: this.state.currentChart > 0 ? this.state.currentChart-1 : this.state.currentChart
+					});
+	        break;
+				default:
+					break;
+	    }
+		}
+  }
 
 	componentDidMount() {
 		this.props.navigation.setParams({delete: this.handleDelete});
 	}
 
 	render() {
+		const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
 		const date = new Date(this.message.timestamp);
+		//let chartFile = this.charts[this.state.currentChart];
+		console.log(`currentChart: ${this.state.currentChart}`);
 		return (
 			<View style={styles.container}>
 				<View style={styles.msgHeader}>
 					<Text style={{fontSize: 20}}>{this.message.subject}</Text>
-					<View>
-						{this.message.star && <AntDesign name={'star'} color={'#FFD306'} size={16} />}
-						<Text style={{fontSize: 10, color: '#6C6C6C'}}>{`${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`}</Text>
+					<View style={{flexDirection: 'row'}}>
+						{this.message.star && <AntDesign name={'star'} color={'#FFD306'} size={12} />}
+						<Text style={{fontSize: 10, color: '#6C6C6C', marginLeft: 5}}>{`${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`}</Text>
 					</View>
 				</View>
 				<View style={styles.content}>
 					<Text>{this.message.content}</Text>
 				</View>
-				<View style={{alignSelf: 'center'}}>
-					<WebView uri={require('./highChart3dBar_v2.html')} />
-				</View>
+				<GestureRecognizer
+        	onSwipe={(direction, state) => this.onSwipe(direction, state)}
+        	config={config}
+					style={{flexGrow: 1}}
+        >
+					<View style={{flexGrow: 1}}>
+						{this.state.currentChart === 0 &&
+							<View style={{alignSelf: 'center'}}>
+							<WebView uri={require('./highChart3dBar_v0.html')} />
+							</View>
+						}
+						{this.state.currentChart === 1 &&
+							<BubbleChart />
+						}
+					</View>
+				</GestureRecognizer>
 			</View>
 		);
 	}

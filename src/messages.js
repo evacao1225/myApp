@@ -109,6 +109,8 @@ export default class Messages extends Component {
 				let date = new Date(item.timestamp);
 				let now = new Date();
 				let sameDay = Utility.isSameDay(date, now);
+				let month = `0${date.getMonth()+1}`.slice(-2);
+				let day = `0${date.getDate()}`.slice(-2);
 
 				messageItems.push(
 					<TouchableOpacity key={item.subject} style={styles.msgItem} onPress={() => {that.handlePress(index)}}>
@@ -116,19 +118,22 @@ export default class Messages extends Component {
 							<FontAwesome
 								name={item.read ? 'envelope-open-o' : 'envelope-o'}
 								size={20}
-								color={item.read ? 'gray' : '#004B97'}
+								color={item.read ? 'gray' : 'black'}
 							/>
 						</View>
 						<View style={styles.itemRight}>
 							<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-								<Text style={styles.title}>{item.subject}</Text>
+								<View style={{flexDirection: 'row', alignItems: 'baseline', paddingBottom: 5,}}>
+									{!item.read && <View style={{width: 8, height: 8, borderRadius: 4, backgroundColor: '#005AB5'}} />}
+									<Text style={styles.title}>{item.subject}</Text>
+								</View>
 								<View style={{flexDirection: 'row'}}>
 									{item.star &&
 										<AntDesign name={'star'} color={'#FFD306'} size={16} />
 									}
 									<Text style={styles.time}>
 										{sameDay ? (`${date.getHours()}:${date.getMinutes()}`)
-												 : (`${date.getFullYear()}/${date.getMonth()+1}/${date.getDate()}`)}
+												 : (`${date.getFullYear()}/${month}/${day}`)}
 									</Text>
 								</View>
 
@@ -186,9 +191,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		paddingLeft: 10,
-		paddingBottom: 5,
-		//alignItems: 'flex-start',
+		paddingLeft: 5,
 	},
 	time: {
 		color: '#6C6C6C',

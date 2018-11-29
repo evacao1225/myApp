@@ -111,7 +111,9 @@ const TabNavigator = createBottomTabNavigator({
 				}else if(routeName === 'userStackNavigator') {
 					iconName = `user-circle${focused ? '' : '-o'}`;
 				}
-				return <FontAwesome name={iconName} size={horizontal ? 20 : 25} color={tintColor} />;
+				return (
+					<FontAwesome name={iconName} size={horizontal ? 20 : 25} color={tintColor} />
+				);
 			},
 	}),
 	tabBarOptions: {
@@ -129,3 +131,16 @@ export default function App(props){
 		</MenuProvider>
 	);
 }
+
+const styles = StyleSheet.create({
+	msgBubble: {
+		width: 16,
+		height: 16,
+		alignItems: 'center',
+		backgroundColor: '#f00',
+		borderRadius: 50,
+		position: 'absolute',
+		right: 10,
+		top: -5
+	},
+});
