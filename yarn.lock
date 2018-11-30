@@ -1648,6 +1648,11 @@ d3-timer@1:
   resolved "http://registry.npm.taobao.org/d3-timer/download/d3-timer-1.0.9.tgz#f7bb8c0d597d792ff7131e1c24a36dd471a471ba"
   integrity sha1-97uMDVl9eS/3Ex4cJKNt1HGkcbo=
 
+d3@3.5.17:
+  version "3.5.17"
+  resolved "http://registry.npm.taobao.org/d3/download/d3-3.5.17.tgz#bc46748004378b21a360c9fc7cf5231790762fb8"
+  integrity sha1-vEZ0gAQ3iyGjYMn8fPUjF5B2L7g=
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "http://registry.npm.taobao.org/dashdash/download/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
